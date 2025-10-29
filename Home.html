@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpaceRent - Your Neighborhood Space Marketplace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6366f1;
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #6366f1;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #6366f1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #6366f1;
+            border: 2px solid #6366f1;
+        }
+
+        .btn-secondary:hover {
+            background: #6366f1;
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .search-bar {
+            background: white;
+            padding: 10px;
+            border-radius: 50px;
+            display: flex;
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            padding: 15px 20px;
+            font-size: 16px;
+            outline: none;
+            border-radius: 50px;
+        }
+
+        .search-bar button {
+            padding: 15px 30px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Categories */
+        .categories {
+            padding: 60px 0;
+            background: white;
+        }
+
+        .categories h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 32px;
+            color: #1f2937;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .category-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .category-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .category-card h3 {
+            font-size: 18px;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .category-card p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* Spaces Grid */
+        .spaces-section {
+            padding: 60px 0;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .section-header h2 {
+            font-size: 32px;
+            color: #1f2937;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+
+        .spaces-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .space-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .space-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .space-image {
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            color: white;
+        }
+
+        .space-info {
+            padding: 20px;
+        }
+
+        .space-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1f2937;
+        }
+
+        .space-location {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .space-details {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .space-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #6366f1;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #f59e0b;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 30px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-modal {
+            font-size: 28px;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .booking-section {
+            background: #f9fafb;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .booking-form {
+            display: grid;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: #6366f1;
+        }
+
+        .price-summary {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            color: #6b7280;
+        }
+
+        .price-row.total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+            border-top: 2px solid #e5e7eb;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            padding: 40px 0;
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            opacity: 0.9;
+        }
+
+        .dashboard-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .dashboard-section h3 {
+            margin-bottom: 20px;
+            color: #1f2937;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-confirmed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        /* Footer */
+        footer {
+            background: #1f2937;
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 15px;
+            color: #6366f1;
+        }
+
+        .footer-section a {
+            display: block;
+            color: #d1d5db;
+            text-decoration: none;
+            margin-bottom: 8px;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo" onclick="showPage('home')">🏠 SpaceRent</div>
+            <div class="nav-links">
+                <a href="#" onclick="showPage('browse')">Browse Spaces</a>
+                <a href="#" onclick="showPage('list-space')">List Your Space</a>
+                <a href="#" onclick="showPage('dashboard')">Dashboard</a>
+                <a href="#" class="btn btn-primary">Sign In</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home-page">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>Rent Any Space, Anywhere in Your Neighborhood</h1>
+                <p>From garages to yards, trailers to office desks - find or rent out the perfect space</p>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search by location, space type..." id="search-input">
+                    <button onclick="searchSpaces()">Search</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories -->
+        <section class="categories">
+            <div class="container">
+                <h2>What Kind of Space Do You Need?</h2>
+                <div class="category-grid">
+                    <div class="category-card" onclick="filterByCategory('garage')">
+                        <div class="category-icon">🚗</div>
+                        <h3>Garages</h3>
+                        <p>Park, store, or workshop space</p>
+                    </div>
+                    <div class="category-card" onclick="filterByCategory('yard')">
+                        <div class="category-icon">🌳</div>
+                        <h3>Yards & Gardens</h3>
+                        <p>Outdoor space for events or storage</p>
+                    </div>
+                    <div class="category-card" onclick="filterByCategory('trailer')">
+                        <div class="category-icon">🚚</div>
+                        <h3>Trailers & Containers</h3>
+                        <p>Mobile storage solutions</p>
+                    </div>
+                    <div class="category-card" onclick="filterByCategory('office')">
+                        <div class="category-icon">💼</div>
+                        <h3>Office & Desk Space</h3>
+                        <p>Coworking and meeting rooms</p>
+                    </div>
+                    <div class="category-card" onclick="filterByCategory('storage')">
+                        <div class="category-icon">📦</div>
+                        <h3>Storage Units</h3>
+                        <p>Secure storage facilities</p>
+                    </div>
+                    <div class="category-card" onclick="filterByCategory('warehouse')">
+                        <div class="category-icon">🏭</div>
+                        <h3>Warehouse Space</h3>
+                        <p>Large-scale storage & logistics</p>
+                    </div>
+                    <div class="category-card" onclick="filterByCategory('retail')">
+                        <div class="category-icon">🏪</div>
+                        <h3>Retail & Pop-up</h3>
+                        <p>Shop space for events</p>
+                    </div>
+                    <div class="category-card" onclick="filterByCategory('parking')">
+                        <div class="category-icon">🅿️</div>
+                        <h3>Parking Spots</h3>
+                        <p>Driveway and parking spaces</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Browse Spaces Page -->
+    <div id="browse-page" class="hidden">
+        <section class="spaces-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Available Spaces Near You</h2>
+                    <div class="filters">
+                        <button class="filter-btn active" onclick="filterSpaces('all')">All</button>
+                        <button class="filter-btn" onclick="filterSpaces('garage')">Garages</button>
+                        <button class="filter-btn" onclick="filterSpaces('yard')">Yards</button>
+                        <button class="filter-btn" onclick="filterSpaces('trailer')">Trailers</button>
+                        <button class="filter-btn" onclick="filterSpaces('office')">Office</button>
+                        <button class="filter-btn" onclick="filterSpaces('storage')">Storage</button>
+                        <button class="filter-btn" onclick="filterSpaces('parking')">Parking</button>
+                    </div>
+                </div>
+                <div class="spaces-grid" id="spaces-grid"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- List Your Space Page -->
+    <div id="list-space-page" class="hidden">
+        <section class="spaces-section">
+            <div class="container">
+                <div class="dashboard-section">
+                    <h2>List Your Space</h2>
+                    <p style="margin-bottom: 30px; color: #6b7280;">Turn your unused space into income! Fill out the form below to get started.</p>
+                    <form class="booking-form" onsubmit="submitListing(event)">
+                        <div class="form-group">
+                            <label>Space Type *</label>
+                            <select required>
+                                <option value="">Select space type...</option>
+                                <option value="garage">Garage</option>
+                                <option value="yard">Yard/Garden</option>
+                                <option value="trailer">Trailer/Container</option>
+                                <option value="office">Office/Desk Space</option>
+                                <option value="storage">Storage Unit</option>
+                                <option value="warehouse">Warehouse Space</option>
+                                <option value="retail">Retail/Shop Space</option>
+                                <option value="parking">Parking Spot</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Space Title *</label>
+                            <input type="text" placeholder="e.g., Spacious 2-Car Garage in Downtown" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Location *</label>
+                            <input type="text" placeholder="Street address" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Size (sq ft) *</label>
+                            <input type="number" placeholder="e.g., 400" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description *</label>
+                            <textarea rows="4" placeholder="Describe your space, amenities, access hours, etc." required></textarea>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label>Price per Day ($) *</label>
+                                <input type="number" placeholder="e.g., 25" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Price per Week ($)</label>
+                                <input type="number" placeholder="e.g., 150">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Available From *</label>
+                            <input type="date" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">List My Space</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard-page" class="hidden">
+        <section class="dashboard">
+            <div class="container">
+                <div class="dashboard-header">
+                    <h2>Your Dashboard</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Active Listings</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Total Bookings</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">$2,340</div>
+                            <div class="stat-label">Total Earnings</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">4.8★</div>
+                            <div class="stat-label">Average Rating</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-section">
+                    <h3>Recent Bookings</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Space</th>
+                                <th>Customer</th>
+                                <th>Dates</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Downtown Garage</td>
+                                <td>John Smith</td>
+                                <td>Oct 20-27, 2025</td>
+                                <td>$175</td>
+                                <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                            </tr>
+                            <tr>
+                                <td>Backyard Storage</td>
+                                <td>Sarah Johnson</td>
+                                <td>Oct 18-21, 2025</td>
+                                <td>$80</td>
+                                <td><span class="status-badge status-pending">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>Office Desk #3</td>
+                                <td>Mike Wilson</td>
+                                <td>Oct 15-30, 2025</td>
+                                <td>$320</td>
+                                <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="dashboard-section">
+                    <h3>Your Listings</h3>
+                    <div class="spaces-grid" id="owner-spaces"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Book This Space</h2>
+                <span class="close-modal" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="modal-details"></div>
+                <div class="booking-section">
+                    <h3>Book Your Space</h3>
+                    <form class="booking-form" onsubmit="submitBooking(event)">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label>Start Date *</label>
+                                <input type="date" id="start-date" required onchange="calculatePrice()">
+                            </div>
+                            <div class="form-group">
+                                <label>End Date *</label>
+                                <input type="date" id="end-date" required onchange="calculatePrice()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Rental Purpose *</label>
+                            <select required>
+                                <option value="">Select purpose...</option>
+                                <option value="storage">Storage</option>
+                                <option value="work">Work/Office</option>
+                                <option value="business">Business/Retail</option>
+                                <option value="parking">Parking/Vehicle</option>
+                                <option value="event">Event</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Special Requirements</label>
+                            <textarea rows="3" placeholder="Any special needs or questions?"></textarea>
+                        </div>
+                        <div class="price-summary">
+                            <div class="price-row">
+                                <span>Daily rate</span>
+                                <span id="daily-rate">$0</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Number of days</span>
+                                <span id="num-days">0</span>
+                            </div>
+                            <div class="price-row">
+                                <span>Service fee (10%)</span>
+                                <span id="service-fee">$0</span>
+                            </div>
+                            <div class="price-row total">
+                                <span>Total</span>
+                                <span id="total-price">$0</span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; margin-top: 20px;">Confirm Booking</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>SpaceRent</h4>
+                    <p>Your neighborhood space marketplace. Rent anything from garages to yards, office space to storage.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>For Renters</h4>
+                    <a href="#">Browse Spaces</a>
+                    <a href="#">How It Works</a>
+                    <a href="#">Insurance</a>
+                    <a href="#">Safety</a>
+                </div>
+                <div class="footer-section">
+                    <h4>For Owners</h4>
+                    <a href="#">List Your Space</a>
+                    <a href="#">Earnings Calculator</a>
+                    <a href="#">Owner Resources</a>
+                    <a href="#">Success Stories</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <a href="#">Help Center</a>
+                    <a href="#">Contact Us</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 SpaceRent by Octopus Inc. All rights reserved. Confidential & Proprietary.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample space data
+        const spaces = [
+            {
+                id: 1,
+                type: 'garage',
+                title: 'Spacious 2-Car Garage',
+                location: 'Downtown, 2.5 miles away',
+                size: '400 sq ft',
+                price: 25,
+                rating: 4.8,
+                reviews: 24,
+                icon: '🚗',
+                description: 'Clean, secure garage with 24/7 access. Perfect for storage or parking.',
+                amenities: ['24/7 Access', 'Security', 'Electricity', 'Lighting']
+            },
+            {
+                id: 2,
+                type: 'yard',
+                title: 'Large Backyard Space',
+                location: 'Suburban Area, 1.8 miles away',
+                size: '800 sq ft',
+                price: 30,
+                rating: 4.9,
+                reviews: 18,
+                icon: '🌳',
+                description: 'Fenced backyard, great for outdoor events, storage, or projects.',
+                amenities: ['Fenced', 'Outdoor', 'Private', 'Easy Access']
+            },
+            {
+                id: 3,
+                type: 'trailer',
+                title: 'Storage Trailer',
+                location: 'Industrial Park, 3.2 miles away',
+                size: '320 sq ft',
+                price: 20,
+                rating: 4.7,
+                reviews: 31,
+                icon: '🚚',
+                description: 'Secure trailer for temporary storage. Weather-resistant.',
+                amenities: ['Lockable', 'Weather-proof', 'Mobile', 'Secure']
+            },
+            {
+                id: 4,
+                type: 'office',
+                title: 'Quiet Office Desk',
+                location: 'Business District, 1.2 miles away',
+                size: '50 sq ft',
+                price: 15,
+                rating: 5.0,
+                reviews: 42,
+                icon: '💼',
+                description: 'Private desk in shared office. WiFi, coffee, and meeting room included.',
+                amenities: ['WiFi', 'Coffee', 'Meeting Room', 'Printing']
+            },
+            {
+                id: 5,
+                type: 'storage',
+                title: 'Climate-Controlled Storage',
+                location: 'West Side, 2.1 miles away',
+                size: '200 sq ft',
+                price: 35,
+                rating: 4.6,
+                reviews: 16,
+                icon: '📦',
+                description: 'Temperature-controlled unit, perfect for sensitive items.',
+                amenities: ['Climate Control', '24/7 Access', 'Security Camera', 'Clean']
+            },
+            {
+                id: 6,
+                type: 'parking',
+                title: 'Covered Driveway Spot',
+                location: 'Residential Area, 0.8 miles away',
+                size: '180 sq ft',
+                price: 10,
+                rating: 4.8,
+                reviews: 28,
+                icon: '🅿️',
+                description: 'Covered parking spot in quiet neighborhood. Safe and convenient.',
+                amenities: ['Covered', 'Safe Area', 'Easy Access', 'Lighting']
+            },
+            {
+                id: 7,
+                type: 'warehouse',
+                title: 'Mini Warehouse Section',
+                location: 'Industrial Zone, 4.5 miles away',
+                size: '1000 sq ft',
+                price: 80,
+                rating: 4.7,
+                reviews: 12,
+                icon: '🏭',
+                description: 'Section of larger warehouse. Loading dock access available.',
+                amenities: ['Loading Dock', 'High Ceiling', 'Forklift Access', 'Secure']
+            },
+            {
+                id: 8,
+                type: 'retail',
+                title: 'Pop-Up Shop Corner',
+                location: 'Shopping District, 1.5 miles away',
+                size: '300 sq ft',
+                price: 50,
+                rating: 4.9,
+                reviews: 22,
+                icon: '🏪',
+                description: 'Great foot traffic, perfect for weekend markets or pop-up shops.',
+                amenities: ['High Traffic', 'Display Windows', 'Electricity', 'Weekend Available']
+            }
+        ];
+
+        let currentFilter = 'all';
+        let selectedSpace = null;
+
+        // Initialize
+        window.onload = function() {
+            displaySpaces();
+            displayOwnerSpaces();
+        };
+
+        function showPage(page) {
+            document.getElementById('home-page').classList.add('hidden');
+            document.getElementById('browse-page').classList.add('hidden');
+            document.getElementById('list-space-page').classList.add('hidden');
+            document.getElementById('dashboard-page').classList.add('hidden');
+
+            if (page === 'home') {
+                document.getElementById('home-page').classList.remove('hidden');
+            } else if (page === 'browse') {
+                document.getElementById('browse-page').classList.remove('hidden');
+            } else if (page === 'list-space') {
+                document.getElementById('list-space-page').classList.remove('hidden');
+            } else if (page === 'dashboard') {
+                document.getElementById('dashboard-page').classList.remove('hidden');
+            }
+        }
+
+        function displaySpaces(filter = 'all') {
+            const grid = document.getElementById('spaces-grid');
+            const filtered = filter === 'all' ? spaces : spaces.filter(s => s.type === filter);
+           
+            grid.innerHTML = filtered.map(space => `
+                <div class="space-card" onclick="openBookingModal(${space.id})">
+                    <div class="space-image">${space.icon}</div>
+                    <div class="space-info">
+                        <div class="space-title">${space.title}</div>
+                        <div class="space-location">📍 ${space.location}</div>
+                        <div class="space-details">
+                            <span>📏 ${space.size}</span>
+                        </div>
+                        <div class="space-price">
+                            <div>
+                                <div class="price">$${space.price}<span style="font-size: 14px; color: #6b7280;">/day</span></div>
+                            </div>
+                            <div class="rating">
+                                ⭐ ${space.rating} (${space.reviews})
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function displayOwnerSpaces() {
+            const grid = document.getElementById('owner-spaces');
+            const ownerSpaces = spaces.slice(0, 3); // Show first 3 as owner's listings
+           
+            grid.innerHTML = ownerSpaces.map(space => `
+                <div class="space-card">
+                    <div class="space-image">${space.icon}</div>
+                    <div class="space-info">
+                        <div class="space-title">${space.title}</div>
+                        <div class="space-location">📍 ${space.location}</div>
+                        <div class="space-details">
+                            <span>📏 ${space.size}</span>
+                        </div>
+                        <div class="space-price">
+                            <div>
+                                <div class="price">$${space.price}<span style="font-size: 14px; color: #6b7280;">/day</span></div>
+                            </div>
+                            <button class="btn btn-secondary" style="padding: 8px 16px;">Edit</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterSpaces(type) {
+            currentFilter = type;
+            displaySpaces(type);
+           
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function filterByCategory(type) {
+            showPage('browse');
+            setTimeout(() => {
+                filterSpaces(type);
+                const buttons = document.querySelectorAll('.filter-btn');
+                buttons.forEach(btn => btn.classList.remove('active'));
+                buttons.forEach(btn => {
+                    if (btn.textContent.toLowerCase().includes(type)) {
+                        btn.classList.add('active');
+                    }
+                });
+            }, 100);
+        }
+
+        function searchSpaces() {
+            showPage('browse');
+        }
+
+        function openBookingModal(spaceId) {
+            selectedSpace = spaces.find(s => s.id === spaceId);
+            const modal = document.getElementById('booking-modal');
+           
+            document.getElementById('modal-title').textContent = selectedSpace.title;
+            document.getElementById('modal-details').innerHTML = `
+                <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 48px;">
+                        ${selectedSpace.icon}
+                    </div>
+                    <div style="flex: 1;">
+                        <h3 style="margin-bottom: 10px;">${selectedSpace.title}</h3>
+                        <p style="color: #6b7280; margin-bottom: 10px;">📍 ${selectedSpace.location}</p>
+                        <p style="color: #6b7280; margin-bottom: 10px;">📏 ${selectedSpace.size}</p>
+                        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
+                            <span class="rating">⭐ ${selectedSpace.rating}</span>
+                            <span style="color: #6b7280;">${selectedSpace.reviews} reviews</span>
+                        </div>
+                        <p style="margin-bottom: 15px;">${selectedSpace.description}</p>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            ${selectedSpace.amenities.map(a => `<span style="background: #e0e7ff; color: #4338ca; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: 600;">✓ ${a}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+           
+            document.getElementById('daily-rate').textContent = `$${selectedSpace.price}`;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('booking-modal').classList.remove('active');
+        }
+
+        function calculatePrice() {
+            if (!selectedSpace) return;
+           
+            const startDate = new Date(document.getElementById('start-date').value);
+            const endDate = new Date(document.getElementById('end-date').value);
+           
+            if (startDate && endDate && endDate > startDate) {
+                const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+                const subtotal = days * selectedSpace.price;
+                const serviceFee = subtotal * 0.1;
+                const total = subtotal + serviceFee;
+               
+                document.getElementById('num-days').textContent = days;
+                document.getElementById('service-fee').textContent = `$${serviceFee.toFixed(2)}`;
+                document.getElementById('total-price').textContent = `$${total.toFixed(2)}`;
+            }
+        }
+
+        function submitBooking(e) {
+            e.preventDefault();
+            alert('Booking confirmed! You will receive a confirmation email shortly.');
+            closeModal();
+        }
+
+        function submitListing(e) {
+            e.preventDefault();
+            alert('Your space has been listed successfully! It will be reviewed and published within 24 hours.');
+            showPage('dashboard');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('booking-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
+
